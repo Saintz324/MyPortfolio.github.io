@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:landonorris.com)",
+      "Bash(curl -s https://landonorris.com)",
+      "Bash(curl -s \"https://cdn.prod.website-files.com/67b5a02dc5d338960b17a7e9/css/lando-offbrand.shared.b89f36bcb.css\")",
+      "WebFetch(domain:designbybrandin.com)"
+    ]
+  }
+}
