@@ -9,8 +9,10 @@
     if (!root) return;
     const logo = root.querySelector('#logo');
     if (logo) { logo.remove(); return; }
+    // fallback: hide any anchor/img inside shadow root
     root.querySelectorAll('a, img').forEach(el => el.style.display = 'none');
   }
+  // Try immediately and keep observing until found
   const iv = setInterval(() => {
     killLogo();
     const viewer = document.querySelector('spline-viewer');
@@ -30,6 +32,8 @@
   const intro = document.getElementById('spline-intro');
   if (!intro) return;
 
+  // Brain fades + shrinks while user scrolls through the trigger spacer.
+  // Portfolio sits at its natural document position — no translateY needed.
   gsap.to(intro, {
     opacity: 0,
     scale:   0.9,
@@ -39,11 +43,14 @@
       start:    'top top',
       end:      'bottom top',
       scrub:    1,
+      // Never use display:none — it kills the WebGL context
+      // opacity + pointer-events are enough
       onLeave()     { gsap.set(intro, { pointerEvents: 'none' }); },
       onEnterBack() { gsap.set(intro, { pointerEvents: 'none' }); },
     },
   });
 
+  // Scroll hint fades immediately
   gsap.to('.spline-intro__hint', {
     opacity: 0,
     ease:    'none',
@@ -64,6 +71,7 @@
   const ctx    = canvas.getContext('2d');
   let W, H, t = 0;
 
+  // Each line: baseline position, wave params, visual style
   const DEFS = [
     { yFrac: 0.08, amp: 0.09, freq: 1.2, phase: 0.0,  spd: 0.55, op: 0.055, w: 1   },
     { yFrac: 0.18, amp: 0.06, freq: 0.7, phase: 1.1,  spd: 0.35, op: 0.030, w: 0.8 },
@@ -82,9 +90,9 @@
     ctx.beginPath();
     ctx.moveTo(pts[0].x, pts[0].y);
     for (let i = 0; i < pts.length - 1; i++) {
-      const prev  = pts[i - 1] || pts[i];
-      const curr  = pts[i];
-      const next  = pts[i + 1];
+      const prev = pts[i - 1] || pts[i];
+      const curr = pts[i];
+      const next = pts[i + 1];
       const after = pts[i + 2] || next;
       const cp1x = curr.x + (next.x - prev.x) / 6;
       const cp1y = curr.y + (next.y - prev.y) / 6;
@@ -100,7 +108,7 @@
     DEFS.forEach(d => {
       const pts = [];
       for (let i = 0; i <= SEG; i++) {
-        const x  = (i / SEG) * W;
+        const x = (i / SEG) * W;
         const base = d.yFrac * H;
         const w1 = Math.sin(i * d.freq + t * d.spd + d.phase) * d.amp * H;
         const w2 = Math.cos(i * d.freq * 0.45 + t * d.spd * 0.6 + d.phase * 1.4) * d.amp * 0.45 * H;
@@ -113,11 +121,7 @@
     });
   }
 
-  function tick() {
-    t += 0.004;
-    draw();
-    requestAnimationFrame(tick);
-  }
+  function tick() { t += 0.004; draw(); requestAnimationFrame(tick); }
 
   function resize() {
     W = canvas.width  = window.innerWidth;
@@ -125,12 +129,6 @@
   }
 
   window.addEventListener('resize', resize);
-
-  // Fix for mobile orientation change — browser needs ~300ms to recalculate
-  window.addEventListener('orientationchange', () => {
-    setTimeout(resize, 300);
-  });
-
   resize();
   tick();
 })();
@@ -138,35 +136,36 @@
 /* =========================================
    LENIS SMOOTH SCROLL
    ========================================= */
+// eslint-disable-next-line no-undef
 const lenis = new window.Lenis({
   duration:    1.3,
   easing:      t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   smoothWheel: true,
 });
 
+// Connect Lenis ↔ GSAP ScrollTrigger so scroll-up works correctly
 lenis.on('scroll', () => ScrollTrigger.update());
 gsap.ticker.add(t => lenis.raf(t * 1000));
 gsap.ticker.lagSmoothing(0);
 
 /* =========================================
-   CUSTOM CURSOR (desktop only)
+   CUSTOM CURSOR
    ========================================= */
 (function () {
-  // Don't init cursor on touch devices
-  if (window.matchMedia('(pointer: coarse)').matches) return;
-
   const dot      = document.getElementById('cursor');
   const follower = document.getElementById('cursor-follower');
   if (!dot || !follower) return;
 
   let mx = -200, my = -200;
 
+  // Dot snaps instantly
   document.addEventListener('mousemove', e => {
     mx = e.clientX;
     my = e.clientY;
     gsap.set(dot, { x: mx, y: my });
   });
 
+  // Follower lerps with GSAP ticker — much smoother than rAF lerp
   gsap.ticker.add(() => {
     gsap.to(follower, {
       x: mx, y: my,
@@ -176,15 +175,18 @@ gsap.ticker.lagSmoothing(0);
     });
   });
 
+  // Hover expand
   const hoverEls = 'a, button, .btn, .project-card, .skill-card, .contact__link';
   document.querySelectorAll(hoverEls).forEach(el => {
     el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
     el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
   });
 
+  // Click flash
   document.addEventListener('mousedown', () => document.body.classList.add('cursor-click'));
   document.addEventListener('mouseup',   () => document.body.classList.remove('cursor-click'));
 
+  // Hide when leaving window
   document.addEventListener('mouseleave', () => gsap.to([dot, follower], { opacity: 0, duration: 0.3 }));
   document.addEventListener('mouseenter', () => gsap.to([dot, follower], { opacity: 1, duration: 0.3 }));
 })();
@@ -221,8 +223,10 @@ gsap.ticker.lagSmoothing(0);
 function introAnim() {
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
+  // Nav
   tl.from('.nav', { y: -60, opacity: 0, duration: 0.8 });
 
+  // Hero split lines (each .split-line > span slides up)
   tl.to('.hero__title .split-line > span', {
     y: 0,
     duration: 1,
@@ -230,6 +234,7 @@ function introAnim() {
     ease: 'power3.out',
   }, '-=0.4');
 
+  // Eyebrow + desc + cta
   tl.to('.hero [data-anim="fade-up"]', {
     y: 0,
     opacity: 1,
@@ -238,6 +243,7 @@ function introAnim() {
     ease: 'power3.out',
   }, '-=0.5');
 
+  // Hero number
   tl.to('.hero__number', { opacity: 1, duration: 0.6 }, '-=0.3');
 }
 
@@ -246,6 +252,7 @@ function introAnim() {
    ========================================= */
 gsap.registerPlugin(ScrollTrigger);
 
+// Helper: split text into word spans for blur-reveal
 function splitWords(el) {
   const text  = el.innerText;
   const words = text.split(' ');
@@ -292,6 +299,7 @@ document.querySelectorAll('[data-anim="fade-up"]:not(.hero *)').forEach((el, i) 
   });
 });
 
+// Project cards — stagger per section
 ScrollTrigger.batch('.project-card', {
   start: 'top 90%',
   onEnter: batch => gsap.to(batch, {
@@ -305,6 +313,7 @@ ScrollTrigger.batch('.project-card', {
 });
 gsap.set('.project-card', { y: 50, opacity: 0 });
 
+// Skill cards
 ScrollTrigger.batch('.skill-card', {
   start: 'top 90%',
   onEnter: batch => gsap.to(batch, {
@@ -318,6 +327,7 @@ ScrollTrigger.batch('.skill-card', {
 });
 gsap.set('.skill-card', { y: 50, opacity: 0 });
 
+// Stats
 ScrollTrigger.batch('.stat', {
   start: 'top 90%',
   onEnter: batch => gsap.to(batch, {
@@ -332,21 +342,21 @@ ScrollTrigger.batch('.stat', {
 gsap.set('.stat', { y: 40, opacity: 0 });
 
 /* =========================================
-   PROJECT PREVIEW ON HOVER (desktop only)
+   PROJECT PREVIEW ON HOVER  (premium)
    ========================================= */
 (function () {
-  // Skip on touch devices
-  if (window.matchMedia('(pointer: coarse)').matches) return;
-
   const preview = document.getElementById('project-preview');
   const img     = document.getElementById('project-preview-img');
   if (!preview || !img) return;
 
+  // Offset so preview floats above-right of cursor
   const OX = 28, OY = -180;
 
+  // gsap.quickTo — purpose-built for smooth cursor following, no rAF conflict
   const moveX = gsap.quickTo(preview, 'x', { duration: 0.65, ease: 'power3.out' });
   const moveY = gsap.quickTo(preview, 'y', { duration: 0.65, ease: 'power3.out' });
 
+  // Start off-screen
   gsap.set(preview, { x: -999, y: -999, xPercent: 0, yPercent: 0,
                        scale: 0.85, opacity: 0,
                        clipPath: 'inset(100% 0 0 0)', rotateZ: -2 });
@@ -364,7 +374,9 @@ gsap.set('.stat', { y: 40, opacity: 0 });
   }
 
   document.querySelectorAll('.project-card[data-preview]').forEach(card => {
+
     card.addEventListener('mouseenter', e => {
+      // Snap to current cursor before animating in (no lag on entry)
       gsap.set(preview, { x: e.clientX + OX, y: e.clientY + OY });
 
       const src = toScreenshot(card.getAttribute('data-preview'));
@@ -401,9 +413,10 @@ gsap.set('.stat', { y: 40, opacity: 0 });
       });
     });
 
+    // 3D tilt follows cursor inside the card
     card.addEventListener('mousemove', e => {
       const r    = card.getBoundingClientRect();
-      const relX = (e.clientX - r.left)  / r.width  - 0.5;
+      const relX = (e.clientX - r.left)  / r.width  - 0.5;  // -0.5 … 0.5
       const relY = (e.clientY - r.top)   / r.height - 0.5;
       gsap.to(preview, {
         rotateZ: -1.5 + relX * 8,
@@ -445,6 +458,7 @@ gsap.set('.stat', { y: 40, opacity: 0 });
   document.querySelectorAll('.project-card[data-href]').forEach(card => {
     card.style.cursor = 'pointer';
     card.addEventListener('click', e => {
+      // Don't double-fire if the ↗ link itself was clicked
       if (e.target.closest('.project-card__link')) return;
       window.open(card.dataset.href, '_blank', 'noopener');
     });
@@ -463,7 +477,9 @@ gsap.set('.stat', { y: 40, opacity: 0 });
 
   const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
 
+  // Scramble a single element's text to target, resolving left→right
   function scramble(el, target, delay = 0) {
+    // Skip elements with HTML children (contact__title handled separately)
     if (el.classList.contains('contact__title')) {
       setTimeout(() => {
         const parts = target.split('|');
@@ -475,16 +491,16 @@ gsap.set('.stat', { y: 40, opacity: 0 });
     }
 
     const len      = Math.max(el.textContent.length, target.length);
-    const duration = 600;
-    const interval = 30;
+    const duration = 600;           // total ms for this element
+    const interval = 30;            // frame every 30ms
     const frames   = duration / interval;
     let   frame    = 0;
 
     setTimeout(() => {
       const timer = setInterval(() => {
         frame++;
-        const progress = frame / frames;
-        const resolved = Math.floor(progress * len);
+        const progress = frame / frames;            // 0 → 1
+        const resolved = Math.floor(progress * len); // chars locked in so far
 
         let display = '';
         for (let i = 0; i < len; i++) {
@@ -513,10 +529,11 @@ gsap.set('.stat', { y: 40, opacity: 0 });
     const els = [...document.querySelectorAll('[data-pt][data-en]')];
     els.forEach((el, i) => {
       const target = el.getAttribute('data-' + l);
-      if (target) scramble(el, target, i * 55);
+      if (target) scramble(el, target, i * 55); // stagger 55ms between elements
     });
   }
 
+  // Button spin animation on click
   btn.addEventListener('click', () => {
     lang = lang === 'pt' ? 'en' : 'pt';
 
