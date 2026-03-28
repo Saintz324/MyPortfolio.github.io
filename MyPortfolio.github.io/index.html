@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="index.css" />
+
+  <!-- Spline viewer -->
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.70/build/spline-viewer.js"></script>
+</head>
+<body>
+
+  <!-- =============================================
+       SPLINE FULLSCREEN INTRO
+       ============================================= -->
+  <div id="spline-intro">
+    <spline-viewer
+      url="https://prod.spline.design/VoQGKFMCZHhCmcFQ/scene.splinecode"
+      loading-anim-type="none"
+    ></spline-viewer>
+
+    <div class="spline-intro__label">EDUARDO SILVA — PORTFOLIO 2026</div>
+
+    <div class="spline-intro__hint">
+      <span class="spline-intro__hint-text">scroll</span>
+      <div class="spline-intro__hint-line"></div>
+    </div>
+  </div>
+
+  <!-- Scroll spacer — scrolling through here drives the transition -->
+  <div id="spline-trigger"></div>
+
+  <!-- =============================================
+       PORTFOLIO CONTENT  (slides up on scroll)
+       ============================================= -->
+  <div id="portfolio-wrap">
+
+    <!-- Project preview -->
+    <div id="project-preview">
+      <img id="project-preview-img" src="" alt="preview" />
+    </div>
+
+    <!-- Custom cursor -->
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <!-- Preloader -->
+    <div id="preloader">
+      <div class="preloader__bar"></div>
+    </div>
+
+    <!-- Animated background canvas -->
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+    <!-- NAV -->
+    <nav class="nav">
+      <div class="nav__logo">EDUARDO SILVA</div>
+      <ul class="nav__links">
+        <li><a href="#about"    data-pt="Sobre"    data-en="About">Sobre</a></li>
+        <li><a href="#skills"   data-pt="Skills"   data-en="Skills">Skills</a></li>
+        <li><a href="#projects" data-pt="Projetos" data-en="Projects">Projetos</a></li>
+        <li><a href="#contact"  data-pt="Contato"  data-en="Contact">Contato</a></li>
+      </ul>
+      <div class="nav__actions">
+        <button id="lang-toggle" aria-label="Switch language">
+          <span class="lang-flag">🇧🇷</span>
+          <span class="lang-code">PT</span>
+        </button>
+        <button class="nav__burger" aria-label="Menu">
+          <span></span><span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile nav drawer -->
+    <div class="nav__drawer">
+      <ul>
+        <li><a href="#about"    data-pt="Sobre"    data-en="About">Sobre</a></li>
+        <li><a href="#skills"   data-pt="Skills"   data-en="Skills">Skills</a></li>
+        <li><a href="#projects" data-pt="Projetos" data-en="Projects">Projetos</a></li>
+        <li><a href="#contact"  data-pt="Contato"  data-en="Contact">Contato</a></li>
+      </ul>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero__content">
+        <span class="eyebrow" data-anim="fade-up"
+          data-pt="DESENVOLVEDOR FULL STACK"
+          data-en="FULL STACK DEVELOPER">DESENVOLVEDOR FULL STACK</span>
+        <h1 class="hero__title">
+          <span class="split-line"><span data-pt="CONSTRUINDO" data-en="BUILDING">CONSTRUINDO</span></span>
+          <span class="split-line"><span class="accent" data-pt="SOLUÇÕES" data-en="DIGITAL">SOLUÇÕES</span></span>
+          <span class="split-line"><span data-pt="DIGITAIS" data-en="SOLUTIONS">DIGITAIS</span></span>
+        </h1>
+        <p class="hero__desc" data-anim="fade-up"
+          data-pt="Transformando ideias em experiências digitais de alto desempenho."
+          data-en="Transforming ideas into high-performance digital experiences.">Transformando ideias em experiências digitais de alto desempenho.</p>
+        <div class="hero__cta" data-anim="fade-up">
+          <a href="#projects" class="btn btn--lime" data-pt="Ver Projetos" data-en="View Projects">Ver Projetos</a>
+          <a href="#contact"  class="btn btn--outline" data-pt="Contato" data-en="Contact">Contato</a>
+        </div>
+      </div>
+      <div class="hero__number" data-anim="fade-up">01</div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section about" id="about">
+      <div class="section__inner">
+        <span class="eyebrow" data-anim="fade-up" data-pt="SOBRE MIM" data-en="ABOUT ME">SOBRE MIM</span>
+        <div class="about__grid">
+          <div class="about__text">
+            <h2 class="section__title" data-anim="split"
+              data-pt="Quem sou eu" data-en="Who I am">Quem sou eu</h2>
+            <p data-anim="fade-up"
+              data-pt="Desenvolvedor apaixonado por criar interfaces modernas e sistemas escaláveis. Foco em performance, usabilidade e código limpo."
+              data-en="Developer passionate about building modern interfaces and scalable systems. Focus on performance, usability and clean code.">Desenvolvedor apaixonado por criar interfaces modernas e sistemas escaláveis. Foco em performance, usabilidade e código limpo.</p>
+            <p data-anim="fade-up"
+              data-pt="Experiência com projetos do zero ao deploy, sempre priorizando boas práticas e entrega de valor real."
+              data-en="Experience taking projects from zero to deployment, always prioritizing best practices and delivering real value.">Experiência com projetos do zero ao deploy, sempre priorizando boas práticas e entrega de valor real.</p>
+            <div class="about__stats">
+              <div class="stat" data-anim="fade-up">
+                <span class="stat__number">3+</span>
+                <span class="stat__label" data-pt="Anos de experiência" data-en="Years of experience">Anos de experiência</span>
+              </div>
+              <div class="stat" data-anim="fade-up">
+                <span class="stat__number">20+</span>
+                <span class="stat__label" data-pt="Projetos entregues" data-en="Projects delivered">Projetos entregues</span>
+              </div>
+              <div class="stat" data-anim="fade-up">
+                <span class="stat__number">100%</span>
+                <span class="stat__label" data-pt="Comprometimento" data-en="Commitment">Comprometimento</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3D Avatar -->
+          <div class="avatar-wrap" data-anim="fade-up">
+            <canvas id="avatar-canvas"></canvas>
+            <div class="avatar-glow"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section skills" id="skills">
+      <div class="section__inner">
+        <span class="eyebrow" data-anim="fade-up" data-pt="TECNOLOGIAS" data-en="TECHNOLOGIES">TECNOLOGIAS</span>
+        <h2 class="section__title" data-anim="split">Stack & Skills</h2>
+        <div class="skills__grid">
+          <div class="skill-card" data-anim="fade-up">
+            <span class="skill-card__cat">FRONTEND</span>
+            <ul>
+              <li>React / Next.js</li>
+              <li>TypeScript</li>
+              <li>HTML & CSS</li>
+              <li>Tailwind CSS</li>
+            </ul>
+          </div>
+          <div class="skill-card" data-anim="fade-up">
+            <span class="skill-card__cat">BACKEND</span>
+            <ul>
+              <li>Node.js</li>
+              <li>Java / Spring</li>
+              <li>REST APIs</li>
+              <li>SQL / NoSQL</li>
+            </ul>
+          </div>
+          <div class="skill-card" data-anim="fade-up">
+            <span class="skill-card__cat">DEVOPS</span>
+            <ul>
+              <li>Docker</li>
+              <li>Git / GitHub</li>
+              <li>Linux</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section projects" id="projects">
+      <div class="section__inner">
+        <span class="eyebrow" data-anim="fade-up" data-pt="TRABALHOS" data-en="WORKS">TRABALHOS</span>
+        <h2 class="section__title" data-anim="split" data-pt="Projetos" data-en="Projects">Projetos</h2>
+        <div class="projects__grid">
+          <article class="project-card" data-anim="fade-up"
+            data-preview="https://lightsteelblue-donkey-364484.hostingersite.com/Main/Main%20Page/PHP/MainPage.php"
+            data-href="https://lightsteelblue-donkey-364484.hostingersite.com/Main/Main%20Page/PHP/MainPage.php">
+            <div class="project-card__num">01</div>
+            <div class="project-card__body">
+              <h3>VENDROM</h3>
+              <p data-pt="Sistema de gerenciamento e visualização de produtos de máquina de vendas."
+                 data-en="Vending machine product management and visualization system.">Sistema de gerenciamento e visualização de produtos de máquina de vendas.</p>
+              <div class="project-card__tags">
+                <span>PHP</span><span>MySQL</span><span>Bootstrap</span>
+              </div>
+            </div>
+            <a href="https://lightsteelblue-donkey-364484.hostingersite.com/Main/Main%20Page/PHP/MainPage.php"
+               target="_blank" rel="noopener" class="project-card__link">↗</a>
+          </article>
+          <article class="project-card" data-anim="fade-up" data-preview="https://via.placeholder.com/480x300/1e2318/d2ff00?text=Projeto+2">
+            <div class="project-card__num">02</div>
+            <div class="project-card__body">
+              <h3 data-pt="Projeto 2" data-en="Project 2">Gotinha Verde</h3>
+              <p data-pt="Descrição breve do projeto, tecnologias usadas e impacto gerado."
+                 data-en="Brief project description, technologies used and impact generated.">Descrição breve do projeto, tecnologias usadas e impacto gerado.</p>
+              <div class="project-card__tags">
+                <span>Node.js</span><span>Express</span><span>Mysql</span>
+              </div>
+            </div>
+            <a href="#" class="project-card__link">↗</a>
+          </article>
+          <article class="project-card" data-anim="fade-up" data-preview="https://via.placeholder.com/480x300/1e2318/d2ff00?text=Projeto+3">
+            <div class="project-card__num">03</div>
+            <div class="project-card__body">
+              <h3 data-pt="Projeto 3" data-en="Project 3">Projeto 3</h3>
+              <p data-pt="Descrição breve do projeto, tecnologias usadas e impacto gerado."
+                 data-en="Brief project description, technologies used and impact generated.">Descrição breve do projeto, tecnologias usadas e impacto gerado.</p>
+              <div class="project-card__tags">
+                <span>Java</span><span>Spring Boot</span><span>Docker</span>
+              </div>
+            </div>
+            <a href="#" class="project-card__link">↗</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section contact" id="contact">
+      <div class="section__inner contact__inner">
+        <span class="eyebrow" data-anim="fade-up" data-pt="CONTATO" data-en="CONTACT">CONTATO</span>
+        <h2 class="contact__title" data-anim="split"
+          data-pt="VAMOS|TRABALHAR|JUNTOS?"
+          data-en="LET'S|WORK|TOGETHER?">VAMOS<br/><span class="accent">TRABALHAR</span><br/>JUNTOS?</h2>
+        <div class="contact__links" data-anim="fade-up">
+          <a href="mailto:EduardosilvaDev@hotmail.com" class="contact__link">
+            <span class="contact__link-label">EMAIL</span>
+            <span class="contact__link-val">EduardosilvaDev@hotmail.com ↗</span>
+          </a>
+          <a href="https://github.com/" class="contact__link" target="_blank">
+            <span class="contact__link-label">GITHUB</span>
+            <span class="contact__link-val">github.com/saintz324 ↗</span>
+          </a>
+          <a href="https://linkedin.com/" class="contact__link" target="_blank">
+            <span class="contact__link-label">LINKEDIN</span>
+            <span class="contact__link-val">linkedin.com/in/seu-usuario ↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <span>© 2026 — Eduardo Silva</span>
+      <span data-pt="Feito com dedicação" data-en="Made with dedication">Feito com dedicação</span>
+    </footer>
+
+  </div><!-- end #portfolio-wrap -->
+
+  <!-- Lenis smooth scroll -->
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
