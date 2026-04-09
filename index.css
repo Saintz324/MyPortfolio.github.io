@@ -269,6 +269,8 @@ body {
   height: 100%;
   z-index: 0;
   pointer-events: none;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* =========================================
@@ -285,9 +287,7 @@ body {
   justify-content: space-between;
   padding: 1.5rem 3rem;
   border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background: rgba(26, 30, 20, 0.7);
+  background: rgba(26, 30, 20, 0.95);
 }
 
 .nav__logo {
@@ -829,8 +829,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background: rgba(10,12,8,0.97);
-  backdrop-filter: blur(12px);
+  background: rgba(10,12,8,0.98);
   align-items: center;
   justify-content: center;
   opacity: 0;
@@ -911,4 +910,154 @@ body {
   #project-preview { display: none; } /* hide floating preview on touch */
   * { cursor: auto !important; }      /* restore native cursor on mobile */
   #cursor, #cursor-follower { display: none; }
+}
+
+/* =========================================
+   GRAIN / NOISE OVERLAY
+   ========================================= */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99997;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* =========================================
+   SCROLL ORB — brain + circular progress
+   ========================================= */
+#scroll-orb {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 72px;
+  height: 72px;
+  z-index: 500;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+#scroll-orb.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+.scroll-orb__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.scroll-orb__brain {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: brainSpin 12s linear infinite;
+  color: var(--lime);
+  filter: drop-shadow(0 0 5px rgba(210,255,0,0.55));
+}
+.scroll-orb__brain svg {
+  width: 40px;
+  height: 40px;
+}
+@keyframes brainSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* =========================================
+   NAV — COMPACT ON SCROLL + LINK UNDERLINES
+   ========================================= */
+.nav {
+  transition: padding 0.5s cubic-bezier(0.16,1,0.3,1),
+              background 0.5s ease;
+}
+.nav.scrolled {
+  padding-top: 0.85rem;
+  padding-bottom: 0.85rem;
+  background: rgba(18, 21, 14, 0.98);
+}
+.nav__links a {
+  position: relative;
+}
+.nav__links a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -3px;
+  width: 100%; height: 1px;
+  background: var(--lime);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+}
+.nav__links a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* =========================================
+   MARQUEE STRIP
+   ========================================= */
+.marquee {
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0.9rem 0;
+  position: relative;
+  z-index: 1;
+  background: var(--bg);
+}
+.marquee__inner {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+.marquee__inner span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--grey-2);
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+.marquee__dot {
+  color: var(--lime) !important;
+  font-size: 0.5rem !important;
+}
+.marquee:hover .marquee__inner {
+  animation-play-state: paused;
+}
+.marquee:hover .marquee__inner span {
+  color: var(--grey-1);
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* =========================================
+   PROJECT NUM — accent on hover
+   ========================================= */
+.project-card__num {
+  transition: color 0.4s var(--ease), font-size 0.4s var(--ease);
+}
+.project-card:hover .project-card__num {
+  color: var(--lime);
+}
+
+/* =========================================
+   FOOTER — live clock
+   ========================================= */
+#footer-clock {
+  font-variant-numeric: tabular-nums;
+  color: var(--lime);
+  letter-spacing: 0.05em;
 }
