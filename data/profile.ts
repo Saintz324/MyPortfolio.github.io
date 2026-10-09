@@ -14,7 +14,7 @@ export type SocialLink = {
 export const profile = {
   firstName: "Eduardo",
   lastName: "Silva",
-  role: ["Creative", "Developer"],
+  role: ["Full Stack", "Developer"],
   /** EDIT: the short line under your role in the hero. */
   availability: "Available for new projects",
   /** EDIT: city / country shown in the footer. */
