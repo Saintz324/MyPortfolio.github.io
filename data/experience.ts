@@ -6,12 +6,28 @@
 export type ExperienceItem = {
   company: string;
   role: string;
-  period: string;
+  /** Leave out when unknown; the date column then stays empty. */
+  period?: string;
   description: string;
   stack: string[];
 };
 
 export const experience: ExperienceItem[] = [
+  {
+    company: "FRPC",
+    role: "Full-stack developer",
+    // EDIT: add the start date, e.g. "Mar 2026 - Present".
+    period: "Present",
+    description: "Building and maintaining web applications across the front end and the back end.",
+    stack: [],
+  },
+  {
+    company: "FRPC",
+    role: "Full-stack development intern",
+    // EDIT: add the internship dates.
+    description: "Internship that led to a full-time role on the development team.",
+    stack: [],
+  },
   {
     company: "IGEC, Lisbon",
     role: "Web developer",

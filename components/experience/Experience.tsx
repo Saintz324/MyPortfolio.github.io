@@ -69,7 +69,7 @@ export function Experience() {
             />
             <p className="mask font-mono text-[12px] tracking-[0.08em] text-ash uppercase">
               <span data-rise="" className="block pt-1">
-                {item.period}
+                {item.period ?? ""}
               </span>
             </p>
             <div>

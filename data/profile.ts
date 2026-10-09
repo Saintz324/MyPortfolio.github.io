@@ -26,7 +26,7 @@ export const profile = {
     "I care about how something *feels*, *moves*, *responds* and *communicates*.",
     "Every interface is a material with weight, timing and texture. My job is to make that material behave.",
   ],
-  bio: "Full-stack developer based in Portugal. I build web products end to end with Next.js, React and PostgreSQL, and interactive experiences with Three.js and motion.",
+  bio: "Full-stack developer at FRPC, based in Portugal. I build web products end to end with Next.js, React and PostgreSQL, and interactive experiences with Three.js and motion.",
   /** Large scroll-driven line in the About section. */
   statement: "Form follows feeling",
   contactStatement: ["Let's build", "something", "unforgettable."],
