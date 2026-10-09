@@ -6,6 +6,7 @@ import { fullName, profile } from "@/data/profile";
 import { gsap, MOTION_OK, useGSAP } from "@/lib/gsap";
 import { scrollToId, useLenis } from "@/hooks/useLenis";
 import { MagneticLink } from "@/components/ui/MagneticLink";
+import { Logo } from "@/components/ui/Logo";
 
 /**
  * Contact: the final scene.
@@ -121,7 +122,8 @@ export function Contact() {
               <span className="text-bone">{profile.availability}</span>
             </p>
             <div className="flex items-start justify-between gap-4">
-              <p>
+              <p className="flex items-center gap-2.5">
+                <Logo className="h-[14px] w-auto text-bone" />
                 &copy; {fullName}
               </p>
               <button

@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { fullName, navItems, profile } from "@/data/profile";
 import { gsap } from "@/lib/gsap";
 import { scrollToId, useLenis } from "@/hooks/useLenis";
+import { Logo } from "@/components/ui/Logo";
 
 type Props = { open: boolean; onClose: () => void; active: string };
 
@@ -63,7 +64,10 @@ export function MobileMenu({ open, onClose, active }: Props) {
       style={{ clipPath: "inset(0 0 100% 0)" }}
     >
       <div className="flex items-center justify-between text-[15px]">
-        <span>&copy; {fullName}</span>
+        <span className="flex items-center gap-3">
+          <Logo className="h-[19px] w-auto" />
+          {fullName}
+        </span>
         <button ref={closeBtn} type="button" onClick={onClose}>
           Close
         </button>

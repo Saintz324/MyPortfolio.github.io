@@ -6,6 +6,7 @@ import { gsap } from "@/lib/gsap";
 import { world } from "@/lib/world";
 import { scrollToId, useLenis } from "@/hooks/useLenis";
 import { MobileMenu } from "./MobileMenu";
+import { Logo } from "@/components/ui/Logo";
 
 /**
  * Floating navigation.
@@ -80,9 +81,14 @@ export function Nav() {
               : "calc(var(--gutter) + 18px) calc(var(--gutter) + 26px)",
           }}
         >
-          <a href="#top" onClick={go("top")} className="text-[15px] tracking-[-0.01em]" aria-label={`${fullName}, back to top`}>
-            <span aria-hidden="true">&copy; </span>
-            {fullName}
+          <a
+            href="#top"
+            onClick={go("top")}
+            className="flex items-center gap-3 text-[15px] tracking-[-0.01em]"
+            aria-label={`${fullName}, back to top`}
+          >
+            <Logo className="h-[19px] w-auto" />
+            <span className="max-sm:sr-only">{fullName}</span>
           </a>
 
           <ul className="hidden items-center gap-[clamp(24px,4vw,72px)] md:flex">

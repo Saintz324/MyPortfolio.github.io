@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef } from "react";
 import { fullName } from "@/data/profile";
 import { gsap } from "@/lib/gsap";
 import { introDone, world } from "@/lib/world";
+import { Logo } from "@/components/ui/Logo";
 
 const VISITED_KEY = "es-visited";
 
@@ -114,7 +115,8 @@ export function Intro() {
       aria-hidden="true"
     >
       <div className="flex justify-between font-mono text-[11px] tracking-[0.12em] uppercase">
-        <span data-intro-small="" className="opacity-0">
+        <span data-intro-small="" className="flex items-center gap-3 opacity-0">
+          <Logo className="h-[15px] w-auto" />
           {fullName}
         </span>
         <span data-intro-small="" className="opacity-0">
