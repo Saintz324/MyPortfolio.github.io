@@ -16,15 +16,14 @@ export const experience: ExperienceItem[] = [
   {
     company: "FRPC",
     role: "Full-stack developer",
-    // EDIT: add the start date, e.g. "Mar 2026 - Present".
-    period: "Present",
+    period: "Jul 2026 - Present",
     description: "Building and maintaining web applications across the front end and the back end.",
     stack: [],
   },
   {
     company: "FRPC",
     role: "Full-stack development intern",
-    // EDIT: add the internship dates.
+    period: "Feb 2026 - Jul 2026",
     description: "Internship that led to a full-time role on the development team.",
     stack: [],
   },
